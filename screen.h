@@ -7,15 +7,14 @@ class Screen {
 private:
     int screenHeight;
     int screenWidth;
-    char** matrix = new char*[screenHeight];
+    char blankChar;
+    char** matrix;
 
 public:
-    Screen(int screenHeight, int screenWidth);
+    Screen(int screenHeight, int screenWidth, char blankChar);
 
     // Setters
-    void writePixel(int xCoord, int yCoord);
-    void writeVLine(int xCoord);
-    void writeHLine(int yCoord);
+    void writePixel(int xCoord, int yCoord, char newChar);
     void clearScreen();
 
     // Getters

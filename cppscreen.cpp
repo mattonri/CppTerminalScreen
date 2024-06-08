@@ -3,48 +3,49 @@
 #include <windows.h>
 #include <stdlib.h>
 #include <string>
-char** createScreen(int screenHeight, int screenWidth){
-    char** matrix = new char*[screenHeight];
-    for (int i = 0; i < screenHeight; ++i) {
-        matrix[i] = new char[screenWidth];
-    }
-    for (int i = 0; i < screenHeight; ++i) {
-        for (int j = 0; j < screenWidth; ++j) {
-            matrix[i][j] = '#';
-        }
-    }
+#include "screen.h"
 
-    return matrix;
-}
-
-void refreshScreen(char** screen, int screenHeight, int screenWidth){
+void refreshScreen(Screen& screen){
+    std::string newFrame = screen.returnScreen();
     #ifdef _WIN32
         system("cls");  // Clear console on Windows
     #else
         system("clear");  // Clear console on Unix-based systems
     #endif
-    for (int i = 0; i < screenHeight; ++i) {
-        for (int j = 0; j < screenWidth; ++j) {
-            std::cout << screen[i][j];
-        }
-        std::cout << std::endl;
+    std::cout << newFrame << std::flush;
+    Sleep(50);
+}
+
+void drawCircle(Screen& terminalScreen, char character) {
+    std::vector<std::pair<int, int>> coordinates = {
+    {0, 6}, {0, 7}, {0, 8}, {0, 9}, {0, 10}, {0, 11}, {0, 12}, {0, 13},
+    {1, 14}, {1, 15}, {1, 16},
+    {2, 17}, {2, 18},
+    {3, 19}, {4, 19}, {5, 19}, {6, 19},
+    {7, 18}, {7, 17},
+    {8, 16}, {8, 15}, {8, 14},
+    {9, 13}, {9, 12}, {9, 11}, {9, 10}, {9, 9}, {9, 8}, {9, 7}, {9, 6},
+    {8, 5}, {8, 4}, {8, 3},
+    {7, 2}, {7, 1},
+    {6, 0}, {5, 0}, {4, 0}, {3, 0},
+    {2, 1}, {2, 2},
+    {1, 3}, {1, 4} ,{1, 5}
+    };
+    for (const auto& coord : coordinates) {
+        refreshScreen(terminalScreen);
+        terminalScreen.writePixel(coord.second, coord.first, character);
     }
 }
-int main(){
-    const int screenHeight = 20;
-    const int screenWidth = 50;
-    char** screen = createScreen(screenHeight, screenWidth);
-    std::cout << "Hello, World! I am invisible!" << std::endl;
-    std::cout << "Hello, World! I am \033[34mblue\033[0m!" << std::endl;
-    std::string output = "Hello";
-    output += "\n"; // Append std::endl to the string
-    output += "World";
-    std::cout << output;
 
-    // refreshScreen(screen, screenHeight, screenWidth);
-    Sleep(100);
-    screen[5][2] = ' ';
-    Sleep(100);
-    // refreshScreen(screen, screenHeight, screenWidth);
+int main(){
+    const int screenHeight = 10;
+    const int screenWidth = 20;
+    Screen terminalScreen(screenHeight, screenWidth, '.');
+    refreshScreen(terminalScreen);
+    while(true)
+    {
+    drawCircle(terminalScreen, 'O');
+    drawCircle(terminalScreen, 'X');
+    }
     return 0;
 }

@@ -7,10 +7,18 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${file}",
+                "${workspaceFolder}/cppscreen.cpp",
+                "${workspaceFolder}/screen.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
+            // "args": [
+            //     "-fdiagnostics-color=always",
+            //     "-g",
+            //     "${file}",
+            //     "-o",
+            //     "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            // ],
             "options": {
                 "cwd": "${fileDirname}"
             },
